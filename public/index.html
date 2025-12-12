@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NeonChat — Anonymous • Secure • Neon</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="neon-body">
+
+  <!-- MATRIX CANVAS -->
+  <canvas id="matrixCanvas" class="matrix"></canvas>
+
+  <!-- APP SHELL -->
+  <div id="app" class="app-shell">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">⟡</div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-section="rooms">Rooms</button>
+        <button class="nav-btn" data-section="recent">Recent</button>
+        <button class="nav-btn" data-section="settings">Settings</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-quick">
+          <div class="avatar neon-avatar">KP</div>
+          <div class="user-info">
+            <div class="u-name">Guest</div>
+            <div class="u-status">online</div>
+          </div>
+        </div>
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">🌗</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-area">
+
+      <!-- INTRO -->
+      <section id="intro" class="intro-screen">
+        <div class="intro-inner">
+          <h1 class="intro-title">WELCOME TO</h1>
+          <h2 class="intro-subtitle">NEONCHAT</h2>
+      
+          <p class="intro-desc">
+            Anonymous chat — private rooms, instant reactions, neon vibes.
+          </p>
+      
+          <div class="intro-btn-wrap">
+            <button id="startBtn" class="primary-btn intro-btn">START CHATTING</button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- USERNAME -->
+      <section id="usernameScreen" class="username-screen glass-panel hidden" aria-hidden="true">
+        <label class="label">WHAT SHOULD WE CALL YOU?</label>
+        <input id="username" class="input" placeholder="Pick an alias (eg. CyberSam)" />
+        <button id="continueBtn" class="primary-btn">CONTINUE</button>
+        <p id="recoverBtn" 
+        style="margin-top:12px; color:#88f; cursor:pointer; text-align:center;">
+        Already have an account? Recover
+        </p>
+        <p id="nameError" class="error" aria-live="polite"></p>
+      </section>
+
+      <!-- ROOMS / RECENT / SETTINGS -->
+      <section id="roomsScreen" class="glass-panel">
+        <h2>Rooms</h2>
+        <p>Create or join encrypted rooms from the sidebar.</p>
+      </section>
+
+      <section id="recentScreen" class="glass-panel hidden">
+        <h2>Recent</h2>
+        <p>Recent rooms & activity.</p>
+      </section>
+
+      <section id="settingsScreen" class="glass-panel hidden">
+        <h2>Settings</h2>
+      
+        <p>Your Plan: <span id="userPlan">free</span></p>
+      
+        <button id="upgradeBtn" class="primary-btn" style="margin-top:10px;">
+          Upgrade to Premium
+        </button>
+      </section>      
+
+      <!-- ROOM OVERLAY -->
+      <div id="overlay" class="overlay hidden" aria-hidden="true">
+        <div class="card glass-panel">
+          <h3>Create / Join</h3>
+
+          <label class="label">Room Code (optional)</label>
+          <input id="roomCode" class="input" type="text" placeholder="Room Code (optional)" />
+
+          <label class="label">Room Password</label>
+          <input id="roomPassword" class="input" type="password" placeholder="Enter room password" />
+
+          <div class="card-actions" style="display:flex;gap:8px;margin-top:10px">
+            <button id="createBtn" class="secondary-btn">Create Room</button>
+            <button id="getSaltBtn" class="secondary-btn">Get Salt & Join</button>
+          </div>
+          <p id="error" class="error" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <!-- CHAT -->
+      <section id="chat" class="chat hidden" aria-hidden="true">
+        <header class="chat-header neon-glow">
+          <div class="room-left">
+            <div id="roomTitle" class="room-title">Room: —</div>
+            <div id="userCount" class="user-count">1</div>
+          </div>
+          <div class="room-actions">
+            <button id="leaveBtn" class="danger-btn">Exit</button>
+          </div>
+        </header>
+
+        <div class="chat-body">
+          <ul id="messages" class="messages" aria-live="polite"></ul>
+        </div>
+
+        <div class="chat-toolbar">
+          <p id="typing" class="typing" aria-live="polite"></p>
+          <form id="form" class="message-form" autocomplete="off">
+            <input id="msgInput" class="message-input" placeholder="Type a message..." />
+            <button class="send-btn" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- REACTION BAR -->
+  <div id="reactionBar" class="reaction-bar hidden" aria-hidden="true" role="dialog" aria-label="Emoji reactions">
+    <span data-react="👍" role="button" aria-label="like">👍</span>
+    <span data-react="❤️" role="button" aria-label="love">❤️</span>
+    <span data-react="😂" role="button" aria-label="joy">😂</span>
+    <span data-react="😮" role="button" aria-label="surprised">😮</span>
+    <span data-react="😢" role="button" aria-label="sad">😢</span>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
